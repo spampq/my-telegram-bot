@@ -369,7 +369,7 @@ async def process_new_2fa(message):
             f"✅ *Облачный пароль успешно установлен без почты!*\nНовый пароль: `{new_password}`", 
             message.chat.id, 
             msg.message_id, 
-            parse_mode="Markdown"
+            parse_Mode="Markdown"
         )
         await bot.send_message(message.chat.id, "👇 Выберите следующее действие:", reply_markup=get_action_keyboard())
     except Exception as e:
@@ -386,7 +386,7 @@ if __name__ == "__main__":
     # Авторестарт в случае сбоев сети 24/7
     while True:
         try:
-            asyncio.run(bot.infinity_polling(timeout=60, long_polling_timeout=60))
+            asyncio.run(bot.infinity_polling(timeout=60))
         except Exception as e:
             print(f"⚠️ Ошибка соединения: {e}. Перезапуск через 5 секунд...")
             time.sleep(5)
