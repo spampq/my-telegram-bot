@@ -1,6 +1,7 @@
 import os
 import asyncio
 import threading
+import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 import telebot
@@ -38,6 +39,7 @@ def run_health_check_server():
     server = HTTPServer(("0.0.0.0", port), HealthCheckHandler)
     server.serve_forever()
 
+# Запускаем веб-сервер в фоновом потоке
 threading.Thread(target=run_health_check_server, daemon=True).start()
 
 # === 2. ДАННЫЕ АВТОРИЗАЦИИ ===
@@ -380,4 +382,11 @@ async def process_new_2fa(message):
 if __name__ == "__main__":
     bot.add_custom_filter(telebot.asyncio_filters.StateFilter(bot))
     print("🚀 Бот запущен!")
-    asyncio.run(bot.polling(non_stop=True))
+    
+    # Авторестарт в случае сбоев сети 24/7
+    while True:
+        try:
+            asyncio.run(bot.infinity_polling(timeout=60, long_polling_timeout=60))
+        except Exception as e:
+            print(f"⚠️ Ошибка соединения: {e}. Перезапуск через 5 секунд...")
+            time.sleep(5)
