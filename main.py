@@ -369,7 +369,7 @@ async def process_new_2fa(message):
             f"✅ *Облачный пароль успешно установлен без почты!*\nНовый пароль: `{new_password}`", 
             message.chat.id, 
             msg.message_id, 
-            parse_Mode="Markdown"
+            parse_mode="Markdown"
         )
         await bot.send_message(message.chat.id, "👇 Выберите следующее действие:", reply_markup=get_action_keyboard())
     except Exception as e:
